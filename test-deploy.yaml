@@ -15,14 +15,13 @@ spec:
           image: alpine/git
           env:
             - name: GS_TOKEN
-              value: XXXXXXX
+              value: XXXXXXXX
           args:
             - clone
             - --single-branch
             - --
-            - https://github.com/a8uhnf/hello-world.git
+            - git clone https://oauth2:${GS_TOKEN}@magic.pathao.com/fellowship/loadmaster.git
             - /etc/root 
-            #- clone ;
           volumeMounts:
             - name: test-volume
               mountPath: /etc/root
