@@ -1,0 +1,44 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: test-deploy
+  namespace: supply
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: test-deploy
+    spec:
+      initContainers:
+        - name: busybox
+          image: alpine/git
+          env:
+            - name: GS_TOKEN
+              value: XXXXXXX
+          args:
+            - clone
+            - --single-branch
+            - --
+            - https://github.com/a8uhnf/hello-world.git
+            - /etc/root 
+            #- clone ;
+          volumeMounts:
+            - name: test-volume
+              mountPath: /etc/root
+      containers:
+      - name: hello-busybox
+        image: ubuntu
+        command:
+          - "/bin/bash"
+          - "-c"
+        args:
+        - "while true; do echo hello; sleep 10; done;"
+        volumeMounts:
+          - name: test-volume
+            mountPath: /etc/root
+      volumes:
+        - name: test-volume
+          emptyDir: {}
+            
+          
